@@ -4,11 +4,11 @@ The Amazon E-commerce System is a comprehensive, Spring-based web application th
 
 ## Prerequisites
 
-1. Java Development Kit (JDK) 17 or higher.
-2. 
-3. MySQL database server set up and running.
-4. 
-5. Maven installed to manage project dependencies.
+ - Java Development Kit (JDK) 17 or higher.
+ 
+ - MySQL database server set up and running.
+ 
+ - Maven installed to manage project dependencies.
 
 ## Setup
 
