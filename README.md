@@ -6,7 +6,7 @@ The Amazon E-commerce System is a comprehensive, Spring-based web application th
 
 - Java
 
-- Spring Framework (Spring Boot, Spring MVC and Spring Security)
+- Spring Framework: Spring Boot, Spring MVC and Spring Security
 
 - Hibernate
 
