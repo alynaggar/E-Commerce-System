@@ -27,3 +27,10 @@ The Amazon E-commerce System is a comprehensive, Spring-based web application th
 1. Create a database called 'amazon' using the provided schema file 'amazon.sql'.
 
 2. Edit the 'application.properties' file located in the app's installation directory. Update the `username` and `password` fields with the appropriate credentials for your MySQL server.
+
+## Endpoints
+
+![Screenshot_8](https://github.com/alynaggar/E-Commerce-System/assets/94795814/6db405f7-b701-4f2a-9e12-d6b9c2b2d33d)
+
+![Screenshot_9](https://github.com/alynaggar/E-Commerce-System/assets/94795814/f6f1d697-43c5-4994-995f-15c74b5af0f3)
+
