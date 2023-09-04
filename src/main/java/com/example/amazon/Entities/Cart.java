@@ -17,7 +17,7 @@ public class Cart {
     @Column(nullable = false)
     private double price;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "cart", cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
     private List<CartProduct> cartProducts;
     @JsonIgnore
     @OneToOne(mappedBy = "cart", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

@@ -24,7 +24,7 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.REMOVE, CascadeType.REFRESH})
     @JsonIgnore
     private List<CartProduct> cartProducts;
 

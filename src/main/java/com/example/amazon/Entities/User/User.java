@@ -41,7 +41,7 @@ public class User implements UserDetails {
     private String otp;
 
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private Cart cart;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;

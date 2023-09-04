@@ -4,6 +4,8 @@ import com.example.amazon.Entities.*;
 import com.example.amazon.Entities.User.User;
 import com.example.amazon.Repositories.CartRepo;
 import com.example.amazon.Repositories.UserRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,8 @@ import java.util.Optional;
 @Service
 public class CartService {
 
+    @PersistenceContext
+    EntityManager entityManager;
     private CartRepo cartRepo;
     private CartProductService cartProductService;
     private ProductService productService;
@@ -71,7 +75,9 @@ public class CartService {
                 product.get().setQuantity(product.get().getQuantity() - quantity);     //take quantity from product
                 cartProductService.createCartProduct(cartProduct);
                 productService.updateProduct(product.get());
-                return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS);
+                cartRepo.save(user.get().getCart());
+                entityManager.refresh(user.get().getCart());
+                return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS, user.get().getCart());
         }
         return new AmazonResponseEntity<>(AmazonResponseCode.PRODUCT_NOT_FOUND);
     }
@@ -86,7 +92,9 @@ public class CartService {
                 product.get().setQuantity(product.get().getQuantity() + cartProduct.get().getQuantity());     //put quantity back to product
                 cartProductService.deleteCartProduct(new CartProduct.CartProductId(user.get().getCart().getId(), productId));
                 productService.updateProduct(product.get());
-                return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS);
+                cartRepo.save(user.get().getCart());
+                entityManager.refresh(user.get().getCart());
+                return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS, user.get().getCart());
             }
             return new AmazonResponseEntity<>(AmazonResponseCode.PRODUCT_NOT_IN_CART);
         }

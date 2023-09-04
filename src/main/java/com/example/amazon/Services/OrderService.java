@@ -4,6 +4,8 @@ import com.example.amazon.Entities.*;
 import com.example.amazon.Entities.CartProduct.CartProductId;
 import com.example.amazon.Entities.User.User;
 import com.example.amazon.Repositories.OrderRepo;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,16 +16,16 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
+    @PersistenceContext
+    EntityManager entityManager;
     private OrderRepo orderRepo;
-    private CartService cartService;
     private PaymentService paymentService;
     private CartProductService cartProductService;
     private OrderProductService orderProductService;
     private UserService userService;
 
-    public OrderService(OrderRepo orderRepo, CartService cartService, PaymentService paymentService, CartProductService cartProductService, OrderProductService orderProductService, UserService userService) {
+    public OrderService(OrderRepo orderRepo, PaymentService paymentService, CartProductService cartProductService, OrderProductService orderProductService, UserService userService) {
         this.orderRepo = orderRepo;
-        this.cartService = cartService;
         this.paymentService = paymentService;
         this.cartProductService = cartProductService;
         this.orderProductService = orderProductService;
@@ -33,6 +35,7 @@ public class OrderService {
     public void createOrder(Order order){
         orderRepo.save(order);
     }
+
 
     @Transactional
     public void deleteOrder(long id){
@@ -88,6 +91,7 @@ public class OrderService {
             payment.setUser(order.getUser());
             payment.setAmount(user.get().getCart().getPrice());
             paymentService.createPayment(payment);
+            entityManager.refresh(order);
             return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS, order);
     }
 }
