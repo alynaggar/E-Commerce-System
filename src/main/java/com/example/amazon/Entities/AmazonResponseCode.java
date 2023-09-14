@@ -11,7 +11,7 @@ public enum AmazonResponseCode {
     CART_IS_EMPTY(458, "Cart is empty"),
     QUANTITY_MORE_THAN_AVAILABLE(459, "Quantity is more than available"),
     PRODUCT_NOT_IN_CART(460, "Product is not in cart"),
-    USERNAME_EMAIL_SSN_ALREADY_EXIST(461, "Username, Email or ssn already used"),
+    USERNAME_EMAIL_NUMBER_SSN_ALREADY_EXIST(461, "Username, Email, Number or ssn already used"),
     CART_NOT_FOUND(470, "Cart doesn't exist"),
     PRODUCT_NOT_FOUND(471, "Product doesn't exist"),
     PAYMENT_NOT_FOUND(472, "Payment doesn't exist"),

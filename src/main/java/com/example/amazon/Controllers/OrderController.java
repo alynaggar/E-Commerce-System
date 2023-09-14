@@ -7,6 +7,7 @@ import com.example.amazon.Services.JwtService;
 import com.example.amazon.Services.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,21 +22,25 @@ public class OrderController {
         this.jwtService = jwtService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public AmazonResponseEntity<?> getOrder(@PathVariable long id){
         return orderService.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/info")
-    public AmazonResponseEntity<?> getOrder(HttpServletRequest request){
+    public AmazonResponseEntity<?> getUserOrder(HttpServletRequest request){
         return orderService.getByUser(jwtService.extractUsernameFromRequestHeader(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public AmazonResponseEntity<?> getAllOrders(){
         return orderService.getAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("")
     public AmazonResponseEntity<?> confirmOrder(HttpServletRequest request, @RequestBody Payment payment){
         try {

@@ -52,7 +52,6 @@ public class CartService {
     public AmazonResponseEntity<?> getByUser(String username){
         Optional<User> user = userRepo.findByUsername(username);
         return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS, user.get().getCart());
-
     }
 
     public AmazonResponseEntity<?> getAll(){

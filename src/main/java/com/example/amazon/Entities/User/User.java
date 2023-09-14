@@ -31,11 +31,11 @@ public class User implements UserDetails {
     private String lastName;
     @Column(unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(unique = true)
     private String number;
     @Column(unique = true)
     private String ssn;
-    @Column(name = "is_deleted", nullable = false)
+    @Column(nullable = false)
     private Boolean isDeleted = false;
     @Column
     private String otp;
@@ -79,6 +79,14 @@ public class User implements UserDetails {
         this.cart = cart;
         this.orders = orders;
         this.payments = payments;
+    }
+
+    public User(String username, String password, Role role, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public User(long id, String firstName, String lastName, String email, String number, String ssn, Cart cart, List<Order> orders, List<Payment> payments) {

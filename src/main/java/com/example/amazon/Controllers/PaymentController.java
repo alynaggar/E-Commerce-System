@@ -4,6 +4,7 @@ import com.example.amazon.Entities.AmazonResponseEntity;
 import com.example.amazon.Services.JwtService;
 import com.example.amazon.Services.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,16 +23,19 @@ public class PaymentController {
         this.jwtService = jwtService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public AmazonResponseEntity<?> getPayment(@PathVariable long id){
         return paymentServices.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/info")
-    public AmazonResponseEntity<?> getPayment(HttpServletRequest request){
+    public AmazonResponseEntity<?> getUserPayment(HttpServletRequest request){
         return paymentServices.getByUser(jwtService.extractUsernameFromRequestHeader(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public AmazonResponseEntity<?> getAllPayments(){
         return paymentServices.getAll();

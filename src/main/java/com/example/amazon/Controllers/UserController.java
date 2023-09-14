@@ -8,6 +8,7 @@ import com.example.amazon.Services.JwtService;
 import com.example.amazon.Services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,26 +22,31 @@ public class UserController {
         this.jwtService = jwtService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public AmazonResponseEntity<?> getUser(@PathVariable long id){
         return userService.getById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/info")
     public AmazonResponseEntity<?> getLoggedInUser(HttpServletRequest request){
         return userService.getLoggedInUser(jwtService.extractUsernameFromRequestHeader(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public AmazonResponseEntity<?> getAllUsers(){
         return userService.getAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public AmazonResponseEntity<?> deleteUser(@PathVariable long id){
         return userService.deleteUserById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @DeleteMapping("/delete")
     public AmazonResponseEntity<?> deleteUser(HttpServletRequest request){
         return userService.deleteUserByUsername(jwtService.extractUsernameFromRequestHeader(request));
@@ -51,7 +57,7 @@ public class UserController {
         try {
             return userService.createUser(user);
         }catch (DataIntegrityViolationException dive){
-            return new AmazonResponseEntity<>(AmazonResponseCode.USERNAME_EMAIL_SSN_ALREADY_EXIST);
+            return new AmazonResponseEntity<>(AmazonResponseCode.USERNAME_EMAIL_NUMBER_SSN_ALREADY_EXIST);
         }
     }
 
@@ -60,11 +66,13 @@ public class UserController {
         return userService.authenticateUser(user);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping("")
     public AmazonResponseEntity<?> updateUser(@RequestBody UserDTO userDto, HttpServletRequest request){
         return userService.updateUser(userDto, jwtService.extractUsernameFromRequestHeader(request));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PutMapping("/password")
     public AmazonResponseEntity<?> updateUserPassword(@RequestBody User user, HttpServletRequest request){
         return userService.updateUserPassword(user, jwtService.extractUsernameFromRequestHeader(request));
