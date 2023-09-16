@@ -143,7 +143,11 @@ public class UserService {
     public AmazonResponseEntity<?> authenticateUser(User user) {
         Optional<User> user1 = userRepo.findByUsername(user.getUsername());
         if(user1.isPresent() && !user1.get().getDeleted()){
-            authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            try{
+                authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            }catch (Exception e){
+                return new AmazonResponseEntity<>(AmazonResponseCode.LOGIN_FAILED);
+            }
             return new AmazonResponseEntity<>(AmazonResponseCode.LOGIN_SUCCESS, jwtService.generateToken(user1.get()));
         }
         return new AmazonResponseEntity<>(AmazonResponseCode.LOGIN_FAILED);
