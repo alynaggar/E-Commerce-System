@@ -87,7 +87,7 @@ public class UserService {
 
     public AmazonResponseEntity<?> getById(long id) {
         Optional<User> user = userRepo.findById(id);
-        if(user.isPresent()){
+        if(user.isPresent() && !user.get().getDeleted()){
             user.get().setPassword(null);
             return new AmazonResponseEntity<>(AmazonResponseCode.SUCCESS, user);
         }
